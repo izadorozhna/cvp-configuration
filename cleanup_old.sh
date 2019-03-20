@@ -58,8 +58,8 @@ echo "Delete stacks"
 for i in `openstack stack list | grep $mask | awk '{print $2}'`; do openstack stack check $i; done
 for i in `openstack stack list | grep $mask | awk '{print $2}'`; do openstack stack delete -y $i; echo deleted $i; done
 
-#echo "Delete containers"
-#for i in `openstack container list --all | grep $mask | awk '{print $2}'`; do openstack container delete $i; echo deleted $i; done
+echo "Delete containers"
+for i in `openstack container list --all | grep $mask | awk '{print $2}'`; do openstack container delete $i; echo deleted $i; done
 echo "Done"
 
 # It is not recommended to remove projects until you are sure that there are no other leftovers.

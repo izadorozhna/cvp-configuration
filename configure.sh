@@ -30,7 +30,7 @@ tempest_configuration () {
   # default tempest version is 18.0.0 now, unless
   # it is explicitly defined in pipelines
   if [ "$tempest_version" == "" ]; then
-      tempest_version='18.0.0'
+      tempest_version='17.2.0'
   fi
   if [ "$PROXY" == "offline" ]; then
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
@@ -43,7 +43,9 @@ tempest_configuration () {
     apt-get update; apt-get install -y iputils-ping curl wget
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     #rally verify add-verifier-ext --version 7a4bff728fbd8629ec211669264ab645aa921e2b --source https://github.com/openstack/telemetry-tempest-plugin
-    rally verify add-verifier-ext --version 0.2.0 --source https://github.com/openstack/heat-tempest-plugin
+    rally verify add-verifier-ext --version 12b770e923060f5ef41358c37390a25be56634f0 --source /var/lib/heat-tempest-plugin
+    rally verify add-verifier-ext --version 0.5.0 --source /var/lib/designate-tempest-plugin
+    rally verify add-verifier-ext --version stable/pike  --source /var/lib/neutron-lbaas
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
   fi
@@ -86,6 +88,9 @@ if [ $shared_count -eq 0 ]; then
 fi
 FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
 echo "Fixed net is: $FIXED_NET"
+
+
+
 #Updating of tempest_full.conf file is skipped/deprecated
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FIXED_NET}/'$FIXED_NET'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
@@ -117,7 +122,7 @@ if [ -n "${TEMPEST_REPO}" ]; then
     #cat $current_path/cvp-configuration/tempest/skip-list-fip-only.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     # If Opencontrail is deployed, use this command
     #cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    #cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
     # If Barbican tempest plugin is installed, use this
