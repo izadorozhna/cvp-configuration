@@ -39,24 +39,29 @@
                     "users_per_tenant": {{tenants}}
                 },
                 "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
     "KeystoneBasic.authenticate_user_and_validate_token": [
         {
             "runner": {
-                "type": "rps",
-                "rps": 30,
-                "times": 12000
+                "type": "constant",
+                "concurrency": 20,
+                "times": 1000
             },
             "hooks": [],
             "args": {},
+            "context": {},
             "sla": {
                 "failure_rate": {
                     "max": 0
                 }
-            },
-            "context": {}
+            }
         }
     ],
     "NeutronNetworks.create_and_delete_subnets": [
@@ -84,6 +89,11 @@
                         "subnet": -1
                     }
                 }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -106,6 +116,11 @@
                     "neutron": {
                         "network": -1
                     }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -133,6 +148,11 @@
                         "network": -1,
                         "port": -1
                     }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -180,6 +200,11 @@
                         "security_group_rule": -1
                     }
                 }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -216,6 +241,11 @@
                         "snapshots": -1
                     }
                 }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -241,6 +271,11 @@
                         "snapshots": -1
                     }
                 }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -258,6 +293,11 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -278,6 +318,11 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -301,6 +346,11 @@
                 "roles": [
                     "admin"
                 ]
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -330,6 +380,11 @@
                     "users_per_tenant": {{tenants}}
                 },
                 "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ],
@@ -350,6 +405,11 @@
                 },
                 "volumes": {
                     "size": {{volume_size}},
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -375,6 +435,11 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
                 }
             }
         }
@@ -417,6 +482,11 @@
                     }
                 },
                 "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
             }
         }
     ]
