@@ -8,7 +8,7 @@
 {% set heat_template = "/home/rally/cvp-configuration/rally/default.yaml.template" %}
 {% set rbd_image = "/home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img" %}
 {% set script_file = script_file or "/home/rally/cvp-configuration/rally/instance_test.sh" %}
-{% set volume_size = 50 %}
+{% set volume_size = 10 %}
 {% set concurrency = 1 %}
 {% set subnets_concurrency = 1 %}
 {% set times = 1 %}
@@ -51,8 +51,8 @@
         {
             "runner": {
                 "type": "constant",
-                "concurrency": 20,
-                "times": 1000
+                "concurrency": 30,
+                "times": 3000
             },
             "hooks": [],
             "args": {},
@@ -417,7 +417,7 @@
     "CinderVolumes.create_and_upload_volume_to_image": [
         {
             "args": {
-                "size": {{volume_size}},
+                "size": 1,
                 "force": false,
                 "container_format": "bare",
                 "disk_format": "raw",
