@@ -11,6 +11,8 @@
 {% set volume_size = 10 %}
 {% set concurrency = 1 %}
 {% set subnets_concurrency = 1 %}
+{% set token_concurrency = 30 %}
+{% set token_times = 3000 %}
 {% set times = 1 %}
 {% set users = 2 %}
 {% set tenants = 2 %}
@@ -51,8 +53,8 @@
         {
             "runner": {
                 "type": "constant",
-                "concurrency": 30,
-                "times": 3000
+                "concurrency": {{token_concurrency}},
+                "times": {{token_times}}
             },
             "hooks": [],
             "args": {},
