@@ -23,6 +23,14 @@ rally_configuration () {
   sub_name=`date "+%H_%M_%S"`
   rally deployment create --fromenv --name=tempest_$sub_name
   rally deployment config
+
+  # Check whether file exists by path for Rally Performance scenario, or download it
+  if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
+    export http_proxy=$PROXY
+  fi
+  ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+  cp $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+  unset http_proxy
 }
 
 tempest_configuration () {
@@ -71,14 +79,6 @@ glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
     glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
 }
 IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
-
-# Check whether file exists by path for Rally Performance scenario, or download it
-if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
-      export http_proxy=$PROXY
-    fi
-ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-cp $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-unset http_proxy
 
 #flavor for rally
 nova flavor-list | grep tiny 2>&1 >/dev/null || {
