@@ -77,6 +77,7 @@ if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
       export http_proxy=$PROXY
     fi
 ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+cp $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
 unset http_proxy
 
 #flavor for rally
