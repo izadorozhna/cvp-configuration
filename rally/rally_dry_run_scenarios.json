@@ -1,0 +1,465 @@
+{% set flavor_name = flavor_name or "m1.small" %}
+{% set image_name = image_name or "testvm" %}
+{% set image_name_ubuntu = image_name_ubuntu or "Ubuntu1604" %}
+{% set volume_type = volume_type or "" %}
+{% set availability_zone = "nova" %}
+{% set ext_net_name = "ext-net" %}
+{% set priv_net_id = priv_net_id or "761807a5-1805-481f-80b5-075a6c69bdd7" %}
+{% set heat_template = "/home/rally/cvp-configuration/rally/default.yaml.template" %}
+{% set rbd_image = "/home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img" %}
+{% set script_file = script_file or "/home/rally/cvp-configuration/rally/instance_test.sh" %}
+{% set volume_size = 10 %}
+{% set concurrency = 1 %}
+{% set subnets_concurrency = 1 %}
+{% set token_concurrency = 1 %}
+{% set token_times = 1 %}
+{% set times = 1 %}
+{% set users = 1 %}
+{% set tenants = 1 %}
+{
+    "NovaServers.boot_and_delete_server": [
+        {
+            "args": {
+                "flavor": {
+                    "name": "{{flavor_name}}"
+                },
+                "image": {
+                    "name": "{{image_name_ubuntu}}"
+                },
+                "force_delete": false,
+                "auto_assign_nic": true,
+                "availability_zone": "{{availability_zone}}"
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "KeystoneBasic.authenticate_user_and_validate_token": [
+        {
+            "runner": {
+                "type": "constant",
+                "concurrency": {{token_concurrency}},
+                "times": {{token_times}}
+            },
+            "hooks": [],
+            "args": {},
+            "context": {},
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "NeutronNetworks.create_and_delete_subnets": [
+        {
+            "args": {
+                "network_create_args": {},
+                "subnet_create_args": {},
+                "subnet_cidr_start": "1.1.0.0/30",
+                "subnets_per_network": 2
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{subnets_concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "network": {},
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "quotas": {
+                    "neutron": {
+                        "network": -1,
+                        "subnet": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "NeutronNetworks.create_and_delete_networks": [
+        {
+            "args": {
+                "network_create_args": {}
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "quotas": {
+                    "neutron": {
+                        "network": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "NeutronNetworks.create_and_delete_ports": [
+        {
+            "args": {
+                "network_create_args": {},
+                "port_create_args": {},
+                "ports_per_network": 10
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "network": {},
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "quotas": {
+                    "neutron": {
+                        "network": -1,
+                        "port": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "NovaServers.boot_and_live_migrate_server": [
+        {
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "hooks": [],
+            "args": {
+                "block_migration": false,
+                "flavor": {
+                    "name": "{{flavor_name}}"
+                },
+                "nics": [
+                    {
+                        "net-id": "{{priv_net_id}}"
+                    }
+                ],
+                "auto_assign_nic": true,
+                "image": {
+                    "name": "{{image_name_ubuntu}}"
+                }
+            },
+            "context": {
+                "users": {
+                    "users_per_tenant": {{users}},
+                    "tenants": {{tenants}}
+                },
+                "quotas": {
+                    "nova": {
+                        "instances": -1,
+                        "cores": -1,
+                        "ram": -1,
+                        "floating_ips": -1
+                    },
+                    "neutron": {
+                        "network": -1,
+                        "subnet": -1,
+                        "router": -1,
+                        "security_group": -1,
+                        "security_group_rule": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "NovaServers.boot_server_from_volume_and_delete": [
+        {
+            "args": {
+                "flavor": {
+                    "name": "{{flavor_name}}"
+                },
+                "image": {
+                    "name": "{{image_name_ubuntu}}"
+                },
+                "volume_size": {{volume_size}},
+                "volume_type": "{{volume_type}}",
+                "force_delete": false,
+                "auto_assign_nic": true,
+                "availability_zone": "{{availability_zone}}"
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "network": {},
+                "quotas": {
+                    "cinder": {
+                        "volumes": -1,
+                        "gigabytes": -1,
+                        "snapshots": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "CinderVolumes.create_and_delete_volume": [
+        {
+            "args": {
+                "size": {{volume_size}},
+            },
+            "runner": {
+                "type": "constant",
+                "times": {{times}},
+                "concurrency": {{concurrency}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{tenants}},
+                    "users_per_tenant": {{users}}
+                },
+                "quotas": {
+                    "cinder": {
+                        "volumes": -1,
+                        "gigabytes": -1,
+                        "snapshots": -1
+                    }
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "HeatStacks.create_and_delete_stack": [
+        {
+            "args": {
+                "template_path": "{{heat_template}}"
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "GlanceImages.create_and_delete_image": [
+        {
+            "args": {
+                "image_location": "{{rbd_image}}",
+                "container_format": "bare",
+                "disk_format": "qcow2"
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "SwiftObjects.create_container_and_object_then_download_object": [
+        {
+            "args": {
+                "objects_per_container": 5,
+                "object_size": 104857600
+            },
+            "runner": {
+                "type": "constant",
+                "times": {{times}},
+                "concurrency": {{concurrency}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{tenants}},
+                    "users_per_tenant": {{users}}
+                },
+                "roles": [
+                    "admin"
+                ]
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "CinderVolumes.create_and_attach_volume": [
+        {
+            "args": {
+                "size": 100,
+                "image": {
+                    "name": "{{image_name_ubuntu}}"
+                },
+                "flavor": {
+                    "name": "{{flavor_name}}"
+                },
+                "create_volume_params": {
+                },
+                "auto_assign_nic": true,
+                "availability_zone": "{{availability_zone}}"
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "CinderVolumes.create_and_delete_snapshot": [
+        {
+            "args": {
+                "force": false
+            },
+            "runner": {
+                "type": "constant",
+                "concurrency": {{concurrency}},
+                "times": {{times}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{users}},
+                    "users_per_tenant": {{tenants}}
+                },
+                "volumes": {
+                    "size": {{volume_size}},
+                }
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ],
+    "VMTasks.boot_runcommand_delete": [
+        {
+            "args": {
+                "flavor": {
+                    "name": "{{flavor_name}}"
+                },
+                "image": {
+                    "name": "{{image_name_ubuntu}}"
+                },
+                "volume_args": {
+                    "size": {{volume_size}}
+                },
+                "floating_network": "{{ext_net_name}}",
+                "use_floating_ip": true,
+                "wait_for_ping": false,
+                "force_delete": false,
+                "command": {
+                    "interpreter": "/bin/sh",
+                    "script_file": "{{script_file}}"
+                },
+                "username": "ubuntu"
+            },
+            "runner": {
+                "type": "constant",
+                "times": {{times}},
+                "concurrency": {{concurrency}}
+            },
+            "context": {
+                "users": {
+                    "tenants": {{tenants}},
+                    "users_per_tenant": {{users}}
+                },
+                "api_versions@openstack": {
+                    "cinder": {
+                        "service_type": "volumev3"
+                    }
+                },
+                "network": {}
+            },
+            "sla": {
+                "failure_rate": {
+                    "max": 0
+                }
+            }
+        }
+    ]
+}
