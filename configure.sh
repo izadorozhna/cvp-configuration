@@ -44,6 +44,8 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     #rally verify add-verifier-ext --source /var/lib/telemetry-tempest-plugin
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
+    rally verify add-verifier-ext --source /var/lib/designate-tempest-plugin
+    rally verify add-verifier-ext --source /var/lib/neutron-lbaas
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY

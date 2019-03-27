@@ -145,3 +145,14 @@ tempest.api.compute.servers.test_novnc.NoVNCConsoleTestJSON.test_novnc[id-c640fd
 tempest.api.compute.servers.test_servers.ServerShowV247Test.test_show_server[id-88b0bdb2-494c-11e7-a919-92ebcb67fe33]: cannot be verified. After microversion 2.36 os-networks nova api extension used in this tests is deprecated.
 heat_tempest_plugin.tests.scenario.test_aodh_alarm.AodhAlarmTest.test_alarm[id-fc0f18a6-f65c-4df1-b9c5-e160dea59849]: metric service is not installed
 heat_tempest_plugin.tests.functional.test_lbaasv2.LoadBalancerv2Test.test_add_delete_poolmember[id-104f59ae-a3c8-4c12-98e5-a7bc0007878d]: LBaaS is not installed
+neutron_lbaas.tests.tempest.v2.api.test_members_admin.MemberTestJSON.test_create_member_invalid_tenant_id[smoke]: Contrail LBaaS compatibility issue
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_missing_connection_limit: Contrail LBaaS compatibility issue
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_create_load_balancer_invalid_flavor_field[negative]: Contrail LBaaS input validation
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_create_load_balancer_provider_flavor_conflict[negative]: Contrail LBaaS input validation
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_get_load_balancer_stats[smoke]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_with_session_persistence_redundant_cookie_name[negative]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_with_session_persistence_without_cookie_name[negative]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_healthmonitor_basic.TestHealthMonitorBasic.test_health_monitor_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_listener_basic.TestListenerBasic.test_listener_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_load_balancer_basic.TestLoadBalancerBasic.test_load_balancer_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_shared_pools.TestSharedPools.test_shared_pools[compute,network]: Contrail compatibility issues
