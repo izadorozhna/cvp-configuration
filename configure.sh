@@ -38,22 +38,22 @@ tempest_configuration () {
   # default tempest version is 18.0.0 now, unless
   # it is explicitly defined in pipelines
   if [ "$tempest_version" == "" ]; then
-      tempest_version='17.2.0'
+      tempest_version='mcp/queens'
   fi
   if [ "$PROXY" == "offline" ]; then
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
-    #rally verify add-verifier-ext --source /var/lib/telemetry-tempest-plugin
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
+    rally verify add-verifier-ext --source /var/lib/designate-tempest-plugin
+    rally verify add-verifier-ext --source /var/lib/octavia-tempest-plugin
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
     fi
     apt-get update; apt-get install -y iputils-ping curl wget
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
-    #rally verify add-verifier-ext --version 7a4bff728fbd8629ec211669264ab645aa921e2b --source https://github.com/openstack/telemetry-tempest-plugin
-    rally verify add-verifier-ext --version 12b770e923060f5ef41358c37390a25be56634f0 --source https://github.com/openstack/heat-tempest-plugin
-    rally verify add-verifier-ext --version mcp2019.2.0 --source https://github.com/izadorozhna/designate-tempest-plugin
-    rally verify add-verifier-ext --version stable/pike  --source https://github.com/openstack/neutron-lbaas
+    rally verify add-verifier-ext --version mcp/queens --source http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin
+    rally verify add-verifier-ext --version stable/queens  --source http://gerrit.mcp.mirantis.com/packaging/sources/octavia-tempest-plugin
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
   fi
@@ -130,8 +130,12 @@ if [ -n "${TEMPEST_REPO}" ]; then
     # If you do not have fip network, use this command
     #cat $current_path/cvp-configuration/tempest/skip-list-fip-only.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     # If Opencontrail is deployed, use this command
-    #cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    #cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # Since Heat plugin is used:
+    cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # Since Ceph is used:
+    cat $current_path/cvp-configuration/tempest/skip-list-ceph.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # TODO (izadorozhna): Add Octavia skip list if any
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
     # If Barbican tempest plugin is installed, use this
