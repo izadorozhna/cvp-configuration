@@ -51,6 +51,7 @@ tempest_configuration () {
   if [ "$tempest_version" == "" ]; then
       tempest_version='mcp/queens'
   fi
+  tempest_version='mcp/queens'
   if [ "$PROXY" == "offline" ]; then
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
