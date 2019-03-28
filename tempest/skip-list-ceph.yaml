@@ -50,3 +50,5 @@ tempest.api.object_storage.test_object_services.PublicObjectTest.test_access_pub
 tempest.api.object_storage.test_object_slo.ObjectSloTest.test_delete_large_object[id-87b6dfa1-abe9-404d-8bf0-6c3751e6aa77]: not compatible with ceph
 tempest.api.object_storage.test_object_version.ContainerTest.test_versioned_container[id-a151e158-dcbf-4a1f-a1e7-46cd65895a6f]: not compatible with ceph
 tempest.api.volume.admin.test_snapshot_manage.SnapshotManageAdminTest.test_unmanage_manage_snapshot[id-0132f42d-0147-4b45-8501-cc504bbf7810]: not compatible with ceph
+tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_upload_valid_object[id-a22ef352-a342-4587-8f47-3bbdb5b039c4,smoke]: PROD-24197. Since Ceph Luminous setting account quota is possible only with radosgw ops api or radosgw-admin, but not via swift api.
+tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_admin_modify_quota[id-63f51f9f-5f1d-4fc6-b5be-d454d70949d6,smoke]: PROD-24197. Since Ceph Luminous setting account quota is possible only with radosgw ops api or radosgw-admin, but not via swift api.

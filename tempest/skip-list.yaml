@@ -156,3 +156,5 @@ neutron_lbaas.tests.tempest.v2.scenario.test_healthmonitor_basic.TestHealthMonit
 neutron_lbaas.tests.tempest.v2.scenario.test_listener_basic.TestListenerBasic.test_listener_basic[compute,network]: Contrail compatibility issues
 neutron_lbaas.tests.tempest.v2.scenario.test_load_balancer_basic.TestLoadBalancerBasic.test_load_balancer_basic[compute,network]: Contrail compatibility issues
 neutron_lbaas.tests.tempest.v2.scenario.test_shared_pools.TestSharedPools.test_shared_pools[compute,network]: Contrail compatibility issues
+tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_upload_valid_object[id-a22ef352-a342-4587-8f47-3bbdb5b039c4,smoke]: PROD-24197. Since Ceph Luminous setting account quota is possible only with radosgw ops api or radosgw-admin, but not via swift api.
+tempest.api.object_storage.test_account_quotas.AccountQuotasTest.test_admin_modify_quota[id-63f51f9f-5f1d-4fc6-b5be-d454d70949d6,smoke]: PROD-24197. Since Ceph Luminous setting account quota is possible only with radosgw ops api or radosgw-admin, but not via swift api.
