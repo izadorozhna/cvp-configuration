@@ -4,7 +4,7 @@
 {% set volume_type = volume_type or "" %}
 {% set availability_zone = "nova" %}
 {% set ext_net_name = "ext-net" %}
-{% set priv_net_id = priv_net_id or "78ef3e20-9345-4272-9201-9b473fbf74ab" %}
+{% set priv_net_id = priv_net_id or "${FIXED_NET_ID}" %}
 {% set heat_template = "/home/rally/cvp-configuration/rally/default.yaml.template" %}
 {% set rbd_image = "/home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img" %}
 {% set script_file = script_file or "/home/rally/cvp-configuration/rally/instance_test.sh" %}

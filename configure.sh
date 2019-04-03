@@ -31,6 +31,14 @@ rally_configuration () {
   apt-get update; apt-get install -y iputils-ping curl wget
   wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
   unset http_proxy
+
+  # Get fixed net id and set it in rally_scenarios.json, rally_dry_run_scenarios.json
+  FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
+  FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
+  echo "Fixed net is: $FIXED_NET"
+  current_path=$(pwd)
+  sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
+  sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
 }
 
 tempest_configuration () {
@@ -100,6 +108,7 @@ if [ $shared_count -eq 0 ]; then
   neutron subnet-create --name fixed-subnet --gateway 192.168.0.1 --allocation-pool start=192.168.0.2,end=192.168.0.254 --ip-version 4 fixed-net 192.168.0.0/24
 fi
 FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
+FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
 echo "Fixed net is: $FIXED_NET"
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET -c subnets | grep subnets | awk '{print $4}')
 FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | awk '{print $4}')
