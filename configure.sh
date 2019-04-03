@@ -53,14 +53,14 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     current_path=$(pwd)
     # Install Heat plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b $tempest_version $current_path/heat-tempest-plugin
-    rally verify add-verifier-ext --version $tempest_version --source $current_path/heat-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b $tempest_version $current_path/designate-tempest-plugin
-    rally verify add-verifier-ext --version $tempest_version --source $current_path/designate-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
     # Install Octavia plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/octavia-tempest-plugin -b $tempest_version $current_path/octavia-tempest-plugin
-    rally verify add-verifier-ext --version $tempest_version --source $current_path/octavia-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/octavia-tempest-plugin -b mcp/queens $current_path/octavia-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/octavia-tempest-plugin
     # Install Neutron LBaaS plugin
     rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
 
