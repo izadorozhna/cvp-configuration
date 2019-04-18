@@ -24,10 +24,6 @@ RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest
     pushd designate-tempest-plugin; git checkout mcp/queens; pip install -r requirements.txt; \
     popd;
 
-RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/octavia-tempest-plugin && \
-    pushd octavia-tempest-plugin; git checkout mcp/queens; pip install -r requirements.txt; \
-    popd;
-
 COPY rally/ /var/lib/cvp-configuration/rally
 COPY tempest/ /var/lib/cvp-configuration/tempest
 COPY cleanup.sh  /var/lib/cvp-configuration/cleanup.sh

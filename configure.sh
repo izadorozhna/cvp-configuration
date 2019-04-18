@@ -52,7 +52,6 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
     rally verify add-verifier-ext --source /var/lib/designate-tempest-plugin
-    rally verify add-verifier-ext --source /var/lib/octavia-tempest-plugin
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
@@ -66,9 +65,6 @@ tempest_configuration () {
     # Install Designate plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
-    # Install Octavia plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/octavia-tempest-plugin -b mcp/queens $current_path/octavia-tempest-plugin
-    rally verify add-verifier-ext --version mcp/queens --source $current_path/octavia-tempest-plugin
     # Install Neutron LBaaS plugin
     rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
 
