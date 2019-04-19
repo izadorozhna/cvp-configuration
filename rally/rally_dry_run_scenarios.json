@@ -241,6 +241,14 @@
                         "volumes": -1,
                         "gigabytes": -1,
                         "snapshots": -1
+                    },
+                    "nova": {
+                        "instances": -1,
+                        "cores": -1,
+                        "ram": -1,
+                        "key_pairs": -1,
+                        "security_groups": -1,
+                        "security_group_rules": -1
                     }
                 }
             },
@@ -359,7 +367,7 @@
     "CinderVolumes.create_and_attach_volume": [
         {
             "args": {
-                "size": 100,
+                "size": {{volume_size}},
                 "image": {
                     "name": "{{image_name_ubuntu}}"
                 },
@@ -381,7 +389,20 @@
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
                 },
-                "network": {}
+                "network": {},
+                "quotas": {
+                    "nova": {
+                        "instances": -1,
+                        "cores": -1,
+                        "ram": -1,
+                        "key_pairs": -1,
+                        "security_groups": -1,
+                        "security_group_rules": -1
+                    },
+                    "cinder": {
+                        "volumes": -1
+                    }
+                }
             },
             "sla": {
                 "failure_rate": {
@@ -407,6 +428,12 @@
                 },
                 "volumes": {
                     "size": {{volume_size}},
+                },
+                "quotas": {
+                    "cinder": {
+                        "snapshots": -1,
+                        "volumes": -1
+                    }
                 }
             },
             "sla": {
