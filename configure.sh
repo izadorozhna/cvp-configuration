@@ -29,8 +29,9 @@ rally_configuration () {
     export http_proxy=$PROXY
   fi
   apt-get update; apt-get install -y iputils-ping curl wget
-  wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+  wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img
   unset http_proxy
+
 
   # Get fixed net id and set it in rally_scenarios.json, rally_dry_run_scenarios.json
   FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
