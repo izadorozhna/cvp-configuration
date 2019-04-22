@@ -19,6 +19,7 @@ check_variables () {
 }
 
 rally_configuration () {
+  cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
   pip install --force-reinstall python-glanceclient==2.11
   sub_name=`date "+%H_%M_%S"`
   rally deployment create --fromenv --name=tempest_$sub_name
@@ -43,6 +44,7 @@ rally_configuration () {
 }
 
 tempest_configuration () {
+  cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
   sub_name=`date "+%H_%M_%S"`
   # default tempest version is 18.0.0 now, unless
   # it is explicitly defined in pipelines
