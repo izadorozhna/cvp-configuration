@@ -156,7 +156,8 @@ if [ -n "${TEMPEST_REPO}" ]; then
     cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     # Since Ceph is used:
     cat $current_path/cvp-configuration/tempest/skip-list-ceph.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    # TODO (izadorozhna): Add Octavia skip list if any
+    # Since LBaaS is used with Contrail:
+    cat $current_path/cvp-configuration/tempest/skip-list-lbaas.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
     # If Barbican tempest plugin is installed, use this

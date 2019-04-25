@@ -1,0 +1,78 @@
+neutron_lbaas.tests.tempest.v2.api.test_members_admin.MemberTestJSON.test_create_member_invalid_tenant_id[smoke]: Contrail LBaaS compatibility issue
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_create_load_balancer_invalid_flavor_field[negative]: Contrail LBaaS input validation
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_create_load_balancer_provider_flavor_conflict[negative]: Contrail LBaaS input validation
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_get_load_balancer_stats[smoke]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_with_session_persistence_redundant_cookie_name[negative]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_with_session_persistence_without_cookie_name[negative]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_healthmonitor_basic.TestHealthMonitorBasic.test_health_monitor_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_listener_basic.TestListenerBasic.test_listener_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_load_balancer_basic.TestLoadBalancerBasic.test_load_balancer_basic[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.scenario.test_shared_pools.TestSharedPools.test_shared_pools[compute,network]: Contrail compatibility issues
+neutron_lbaas.tests.tempest.v2.ddt.test_members_admin_state_up.UpdateMemberAdminStateTests.test_update_member_with_admin_state_up: Contrail compatibility issues; DDT tests are not supported by Rally
+neutron_lbaas.tests.tempest.v2.api.test_health_monitor_admin.TestHealthMonitors.test_create_health_monitor_empty_tenant_id_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_health_monitor_admin.TestHealthMonitors.test_create_health_monitor_for_another_tenant_id_field[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_health_monitor_admin.TestHealthMonitors.test_create_health_monitor_missing_tenant_id_field: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_health_monitors_non_admin.TestHealthMonitors.test_create_health_monitor_invalid_tenant_id[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_admin.ListenersTestJSON.test_create_listener_empty_tenant_id[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_admin.ListenersTestJSON.test_create_listener_invalid_tenant_id: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_admin.ListenersTestJSON.test_create_listener_missing_tenant_id[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_tenant_id[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_list_listeners: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_list_listeners_two[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_create_load_balancer_empty_tenant_id_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_create_load_balancer_for_another_tenant[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_create_load_balancer_missing_tenant_id_field_for_admin: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_create_load_balancer_missing_tenant_id_for_tenant: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_delete_load_balancer_for_tenant[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_admin.LoadBalancersTestAdmin.test_update_load_balancer_description: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_create_load_balancer_missing_name: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_list_load_balancers: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_list_load_balancers_two[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_members_admin.MemberTestJSON.test_create_member_empty_tenant_id[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_members_non_admin.MemberTestJSON.test_create_member_invalid_tenant_id[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_delete_pool[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_update_pool_sesssion_persistence_app_cookie[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_update_pool_sesssion_persistence_app_to_http: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_for_other_tenant_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_invalid_tenant_id_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_missing_lb_algorithm_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_missing_name_field: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_missing_protocol_field[negative]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_list_pools_empty: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_list_pools_one: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_list_pools_two[smoke]: Tempest bug
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_admin_state_up[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_connection_limit[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_load_balancer_id[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_protocol[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_protocol_port[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_empty_tenant_id[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_incorrect_attribute[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_admin_state_up[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_connection_limit[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_description[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_load_balancer_id[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_name[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_protocol[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_invalid_protocol_port[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_missing_field_loadbalancer[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_missing_field_protocol[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_create_listener_missing_field_protocol_port[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_get_listener[smoke]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener[smoke]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_empty_admin_state_up[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_empty_connection_limit[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_empty_description: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_empty_name: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_empty_tenant_id[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_incorrect_attribute[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_invalid_admin_state_up[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_invalid_connection_limit[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_invalid_description[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_invalid_name[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_invalid_tenant_id[negative]: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_missing_admin_state_up: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_missing_connection_limit: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_missing_description: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_listeners_non_admin.ListenersTestJSON.test_update_listener_missing_name: Neutron Contrail plugin issue, /statuses API is not defined
+neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_get_load_balancer_status_tree[smoke]: Neutron Contrail plugin issue, /statuses API is not defined
