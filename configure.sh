@@ -51,8 +51,6 @@ tempest_configuration () {
   if [ "$PROXY" == "offline" ]; then
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
-    rally verify add-verifier-ext --source /var/lib/designate-tempest-plugin
-    rally verify add-verifier-ext --source /var/lib/neutron-lbaas
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
@@ -61,12 +59,6 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     # Install Heat plugin
     rally verify add-verifier-ext --version 12b770e923060f5ef41358c37390a25be56634f0 --source https://github.com/openstack/heat-tempest-plugin
-    # Install Designate plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/pike $current_path/designate-tempest-plugin
-    rally verify add-verifier-ext --version mcp/pike --source $current_path/designate-tempest-plugin
-    # Install LBaaS plugin
-    rally verify add-verifier-ext --version stable/pike  --source https://github.com/openstack/neutron-lbaas
-    pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
   fi
   # supress tempest.conf display in console
