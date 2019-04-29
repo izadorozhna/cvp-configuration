@@ -69,7 +69,7 @@ tempest_configuration () {
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
     # Install Neutron LBaaS plugin
-    rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
+    # rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
 
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
