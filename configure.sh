@@ -158,6 +158,9 @@ if [ -n "${TEMPEST_REPO}" ]; then
     cat $current_path/cvp-configuration/tempest/skip-list-ceph.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     # Since LBaaS is used with Contrail:
     cat $current_path/cvp-configuration/tempest/skip-list-lbaas.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # Since Designate is usedL
+    cat $current_path/cvp-configuration/tempest/skip-list-designate.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
     # If Barbican tempest plugin is installed, use this
