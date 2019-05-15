@@ -99,10 +99,17 @@ glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
 IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
 
 #flavor for rally
-nova flavor-list | grep tiny 2>&1 >/dev/null || {
+nova flavor-list | grep m1.tiny 2>&1 >/dev/null || {
     echo "Let's create m1.tiny flavor"
-    nova flavor-create --is-public true m1.tiny auto 128 1 1
+    nova flavor-create --is-public true m1.tiny auto 512 1 1
 }
+nova flavor-list | grep m1.micro 2>&1 >/dev/null || {
+    echo "Let's create m1.micro flavor"
+    nova flavor-create --is-public true m1.micro auto 1024 2 1
+}
+FLAVOR_REF=$(nova flavor-list | grep m1.tiny | awk '{print $2}')
+FLAVOR_REF_ALT=$(nova flavor-list | grep m1.micro | awk '{print $2}')
+
 #shared fixed network
 shared_count=`neutron net-list -c name -c shared | grep True | wc -l`
 if [ $shared_count -gt 1 ]; then
@@ -123,6 +130,8 @@ echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 
 #Updating of tempest_full.conf file is skipped/deprecated
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's/${FLAVOR_REF}/'$FLAVOR_REF'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's/${FLAVOR_REF_ALT}/'$FLAVOR_REF_ALT'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FIXED_NET}/'$FIXED_NET'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FIXED_SUBNET_NAME}/'$FIXED_SUBNET_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${OS_USERNAME}/'$OS_USERNAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
