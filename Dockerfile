@@ -14,8 +14,8 @@ RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/tempest && \
     pushd tempest; git checkout mcp/queens; pip install -r requirements.txt; \
     popd;
 
-RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin && \
-    pushd heat-tempest-plugin; git checkout mcp/queens; pip install -r requirements.txt; \
+RUN git clone https://github.com/openstack/heat-tempest-plugin && \
+    pushd heat-tempest-plugin; git checkout 0.2.0; pip install -r requirements.txt; \
     popd;
 
 RUN pip install --force-reinstall python-cinderclient==3.2.0

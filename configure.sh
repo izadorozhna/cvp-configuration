@@ -64,8 +64,8 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     current_path=$(pwd)
     # Install Heat plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
-    rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
+    git clone https://github.com/openstack/heat-tempest-plugin -b 0.2.0 $current_path/heat-tempest-plugin
+    rally verify add-verifier-ext --version 0.2.0 --source $current_path/heat-tempest-plugin
     # Install Designate plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
