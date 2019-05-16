@@ -267,7 +267,7 @@
     "CinderVolumes.create_and_delete_volume": [
         {
             "args": {
-                "size": {{volume_size}},
+                "size": {{volume_size}}
             },
             "runner": {
                 "type": "constant",
@@ -442,7 +442,7 @@
                     "users_per_tenant": {{tenants}}
                 },
                 "volumes": {
-                    "size": {{volume_size}},
+                    "size": {{volume_size}}
                 },
                 "api_versions@openstack": {
                     "cinder": {
