@@ -19,7 +19,9 @@ check_variables () {
 }
 
 rally_configuration () {
-  cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
+  [ -d "/home/rally/cvp-configuration" ] && cp -r /home/rally/cvp-configuration /home/rally/source/cvp-configuration
+  [ -d "/home/rally/source/cvp-configuration" ] && cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
+
   pip install --force-reinstall python-glanceclient==2.11
   sub_name=`date "+%H_%M_%S"`
   rally deployment create --fromenv --name=tempest_$sub_name
