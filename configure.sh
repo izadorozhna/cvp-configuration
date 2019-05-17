@@ -33,6 +33,10 @@ rally_configuration () {
   wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img
   unset http_proxy
 
+  # Fix for 'description' field, see https://github.com/xrally/xrally-openstack/blob/0.11.2/rally/plugins/openstack/scenarios/neutron/utils.py#L546
+  echo "[openstack]" >> /etc/rally/rally.conf
+  echo "pre_newton_neutron=True" >> /etc/rally/rally.conf
+
 
   # Get fixed net id and set it in rally_scenarios.json, rally_dry_run_scenarios.json
   FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
