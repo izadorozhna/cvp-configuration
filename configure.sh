@@ -68,8 +68,8 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     current_path=$(pwd)
     # Install Heat plugin
-    git clone https://github.com/openstack/heat-tempest-plugin -b 0.2.0 $current_path/heat-tempest-plugin
-    rally verify add-verifier-ext --version 0.2.0 --source $current_path/heat-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
@@ -177,9 +177,10 @@ if [ -n "${TEMPEST_REPO}" ]; then
 
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
-    # If Barbican tempest plugin is installed, use this
-    #mkdir /etc/tempest
-    #rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
+
+    # If Barbican tempest plugin is installed, and for Heat API tests
+    mkdir -p /etc/tempest
+    rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
     # Add 2 additional tempest tests (live migration to all nodes + ssh to all nodes)
     # TBD
     #cat tempest/test_extension.py >> repo/tempest/scenario/test_server_multinode.py
