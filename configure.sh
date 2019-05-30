@@ -22,18 +22,32 @@ rally_configuration () {
   [ -d "/home/rally/cvp-configuration" ] && cp -r /home/rally/cvp-configuration /home/rally/source/cvp-configuration
   [ -d "/home/rally/source/cvp-configuration" ] && cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
 
-  pip install --force-reinstall python-glanceclient==2.11
+  if [ "$PROXY" != "offline" ]; then
+     if [ -n "${PROXY}" ]; then
+       export http_proxy=$PROXY
+       export https_proxy=$PROXY
+     fi
+     pip install --force-reinstall python-glanceclient==2.11
+     apt-get update; apt-get install -y iputils-ping curl wget
+     unset http_proxy
+     unset https_proxy
+  fi
+
   sub_name=`date "+%H_%M_%S"`
   rally deployment create --fromenv --name=tempest_$sub_name
   rally deployment config
 
   # Check whether file exists by path for Rally Performance scenario, or download it
-  if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
-    export http_proxy=$PROXY
+  if [ "$PROXY" != "offline" ]; then
+     if [ -n "${PROXY}" ]; then
+       export http_proxy=$PROXY
+       export https_proxy=$PROXY
+     fi
+     apt-get update; apt-get install -y iputils-ping curl wget
+     wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+     unset http_proxy
+     unset https_proxy
   fi
-  apt-get update; apt-get install -y iputils-ping curl wget
-  wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-  unset http_proxy
 
   # Fix for 'description' field, see https://github.com/xrally/xrally-openstack/blob/0.11.2/rally/plugins/openstack/scenarios/neutron/utils.py#L546
   echo "[openstack]" >> /etc/rally/rally.conf
@@ -65,6 +79,7 @@ tempest_configuration () {
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
+      export http_proxy=$PROXY
     fi
     apt-get update; apt-get install -y iputils-ping curl wget
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
@@ -80,6 +95,7 @@ tempest_configuration () {
 
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
+    unset http_proxy
   fi
   # supress tempest.conf display in console
   #rally verify configure-verifier --show
@@ -93,11 +109,13 @@ if [ "$PROXY" == "offline" ]; then
 fi
 #image
 glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
-    if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
+    if [ -n "${PROXY}" ] && [ "$PROXY" != "offline" ]; then
       export http_proxy=$PROXY
+      export https_proxy=$PROXY
     fi
     ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
     unset http_proxy
+    unset https_proxy
     echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
     md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
     glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
