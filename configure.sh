@@ -61,6 +61,7 @@ rally_configuration () {
   current_path=$(pwd)
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
+  sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios_light.json
 }
 
 tempest_configuration () {
