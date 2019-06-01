@@ -45,7 +45,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 }
@@ -91,7 +91,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 },
@@ -157,7 +157,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 },
@@ -258,7 +258,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 },
@@ -428,7 +428,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 },
@@ -535,7 +535,7 @@
                 "network": {
                     "router": {
                         "external_gateway_info": {
-                            "network_id": {{ext_net_id}}
+                            "network_id": "{{ext_net_id}}"
                         }
                     }
                 }
