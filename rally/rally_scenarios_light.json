@@ -12,10 +12,10 @@
 {% set script_file = script_file or "/home/rally/source/cvp-configuration/rally/instance_test.sh" %}
 {% set volume_size = 1 %}
 {% set concurrency = 3 %}
-{% set subnets_concurrency = 3 %}
+{% set subnets_concurrency = 2 %}
 {% set token_concurrency = 10 %}
 {% set token_times = 100 %}
-{% set times = 50 %}
+{% set times = 20 %}
 {% set users = 2 %}
 {% set tenants = 5 %}
 {
