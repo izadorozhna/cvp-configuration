@@ -332,14 +332,14 @@ echo "Delete services"
 for i in `openstack service list | grep $mask | awk '{print $2}'`; do openstack service delete $i; echo deleted $i; done
 
 echo "Delete stacks (heat tempest plugin)"
-for i in `openstack stack list | grep "api-" | awk '{print $2}'`; do openstack stack check $i; done
-for i in `openstack stack list | grep "api-" | awk '{print $2}'`; do openstack stack delete -y $i; echo deleted $i; done
+#for i in `openstack stack list | grep "api-" | awk '{print $2}'`; do openstack stack check $i; done
+#for i in `openstack stack list | grep "api-" | awk '{print $2}'`; do openstack stack delete -y $i; echo deleted $i; done
 
-echo "Delete DNS recorsd sets"
-for i in `designate domain-list --all | awk '{print $2}'`; do echo "==Workign with $i=="; for j in `openstack recordset list $i --all-projects | grep -v "SOA" | grep testdomain | awk '{print $2}'`; do openstack recordset delete $i $j --all-projects --edit-managed ; echo "deleted $j"; done; done
+#echo "Delete DNS recorsd sets"
+#for i in `designate domain-list --all | awk '{print $2}'`; do echo "==Workign with $i=="; for j in `openstack recordset list $i --all-projects | grep -v "SOA" | grep testdomain | awk '{print $2}'`; do openstack recordset delete $i $j --all-projects --edit-managed ; echo "deleted $j"; done; done
 
-echo "Delete DNS domains"
-for i in `designate domain-list --all | awk '{print $2}'`; do designate domain-delete $i --all; done
+#echo "Delete DNS domains"
+#for i in `designate domain-list --all | awk '{print $2}'`; do designate domain-delete $i --all; done
 
 
 echo "Tempest projects:"
