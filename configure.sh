@@ -58,10 +58,17 @@ rally_configuration () {
   FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
   FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
   echo "Fixed net is: $FIXED_NET"
+
+  EXT_NET_ID=$(neutron net-list --router:external True | grep ext | awk '{print $2}')
+  echo "External net is: $EXT_NET_ID"
+
   current_path=$(pwd)
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios_light.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios_light.json
 }
 
 tempest_configuration () {
