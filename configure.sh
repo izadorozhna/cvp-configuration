@@ -50,6 +50,7 @@ rally_configuration () {
   fi
 
   # Fix for 'description' field, see https://github.com/xrally/xrally-openstack/blob/0.11.2/rally/plugins/openstack/scenarios/neutron/utils.py#L546
+  mkdir -p /etc/rally
   echo "[openstack]" >> /etc/rally/rally.conf
   echo "pre_newton_neutron=True" >> /etc/rally/rally.conf
 
