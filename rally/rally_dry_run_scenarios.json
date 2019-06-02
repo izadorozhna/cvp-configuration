@@ -29,7 +29,15 @@
                 },
                 "force_delete": false,
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -40,13 +48,6 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
-                },
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
-                    }
                 }
             },
             "sla": {
@@ -87,13 +88,6 @@
                 "times": {{times}}
             },
             "context": {
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
-                    }
-                },
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
@@ -153,13 +147,6 @@
                 "times": {{times}}
             },
             "context": {
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
-                    }
-                },
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
@@ -242,7 +229,15 @@
                 "volume_type": "{{volume_type}}",
                 "force_delete": false,
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -253,13 +248,6 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
-                },
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
-                    }
                 },
                 "api_versions@openstack": {
                     "cinder": {
@@ -412,7 +400,15 @@
                 "create_volume_params": {
                 },
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -423,13 +419,6 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
-                },
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
-                    }
                 },
                 "api_versions@openstack": {
                     "cinder": {
@@ -514,7 +503,15 @@
                     "interpreter": "/bin/sh",
                     "script_file": "{{script_file}}"
                 },
-                "username": "ubuntu"
+                "username": "ubuntu",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -529,13 +526,6 @@
                 "api_versions@openstack": {
                     "cinder": {
                         "service_type": "volumev3"
-                    }
-                },
-                "network": {
-                    "router": {
-                        "external_gateway_info": {
-                            "network_id": "{{ext_net_id}}"
-                        }
                     }
                 }
             },

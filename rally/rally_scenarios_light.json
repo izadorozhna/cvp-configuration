@@ -10,7 +10,7 @@
 {% set heat_template = "/home/rally/source/cvp-configuration/rally/default.yaml.template" %}
 {% set rbd_image = "/home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img" %}
 {% set script_file = script_file or "/home/rally/source/cvp-configuration/rally/instance_test.sh" %}
-{% set volume_size = 1 %}
+{% set volume_size = 10 %}
 {% set concurrency = 3 %}
 {% set subnets_concurrency = 2 %}
 {% set token_concurrency = 10 %}
