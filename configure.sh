@@ -44,7 +44,7 @@ rally_configuration () {
        export https_proxy=$PROXY
      fi
      apt-get update; apt-get install -y iputils-ping curl wget
-     wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+     wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.4.0-x86_64-disk.img
      unset http_proxy
      unset https_proxy
   fi
@@ -122,12 +122,12 @@ glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
       export http_proxy=$PROXY
       export https_proxy=$PROXY
     fi
-    ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+    ls $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img || wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
     unset http_proxy
     unset https_proxy
-    echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
-    md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-    glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+    echo "MD5 should be 443b7623e27ecf03dc9e01ee93f67afe"
+    md5sum $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+    glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
 }
 IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
 
