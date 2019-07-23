@@ -1,4 +1,4 @@
-FROM xrally/xrally-openstack:0.10.1
+FROM xrally/xrally-openstack:0.11.2
 
 SHELL ["/bin/bash", "-xec"]
 
