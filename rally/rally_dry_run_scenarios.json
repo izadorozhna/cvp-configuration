@@ -3,7 +3,7 @@
 {% set image_name_ubuntu = image_name_ubuntu or "Ubuntu1604" %}
 {% set volume_type = volume_type or "" %}
 {% set availability_zone = "nova" %}
-{% set ext_net_name = "ext-net" %}
+{% set ext_net_name = "${EXT_NET_NAME}" %}
 {% set ext_net_id = "${EXT_NET_ID}" %}
 {% set priv_net_id = priv_net_id or "${FIXED_NET_ID}" %}
 {% set heat_template = "/home/rally/source/cvp-configuration/rally/default.yaml.template" %}
