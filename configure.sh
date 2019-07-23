@@ -19,26 +19,48 @@ check_variables () {
 }
 
 rally_configuration () {
-  pip install --force-reinstall python-glanceclient==2.11
+  if [ "$PROXY" != "offline" ]; then
+     if [ -n "${PROXY}" ]; then
+       export http_proxy=$PROXY
+       export https_proxy=$PROXY
+     fi
+     pip install --force-reinstall python-glanceclient==2.11
+     apt-get update; apt-get install -y iputils-ping curl wget
+     unset http_proxy
+     unset https_proxy
+  fi
+
   sub_name=`date "+%H_%M_%S"`
   rally deployment create --fromenv --name=tempest_$sub_name
   rally deployment config
 
   # Check whether file exists by path for Rally Performance scenario, or download it
-  if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
-    export http_proxy=$PROXY
+  if [ "$PROXY" != "offline" ]; then
+     if [ -n "${PROXY}" ]; then
+       export http_proxy=$PROXY
+       export https_proxy=$PROXY
+     fi
+     apt-get update; apt-get install -y iputils-ping curl wget
+     wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O /home/rally/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+     unset http_proxy
+     unset https_proxy
   fi
-  apt-get update; apt-get install -y iputils-ping curl wget
-  wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O /home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-  unset http_proxy
 
   # Get fixed net id and set it in rally_scenarios.json, rally_dry_run_scenarios.json
   FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
   FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
   echo "Fixed net is: $FIXED_NET"
+
+  EXT_NET_ID=$(neutron net-list --router:external True | grep ext | awk '{print $2}')
+  echo "External net is: $EXT_NET_ID"
+
   current_path=$(pwd)
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
+  sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios_light.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_dry_run_scenarios.json
+  sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios_light.json
 }
 
 tempest_configuration () {
@@ -48,19 +70,24 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
     rally verify add-verifier-ext --source /var/lib/neutron-lbaas
-
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
+      export http_proxy=$PROXY
     fi
     apt-get update; apt-get install -y iputils-ping curl wget
-    current_path=$(pwd)
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
+    current_path=$(pwd)
     # Install Heat plugin
-    rally verify add-verifier-ext --version mcp/pike --source http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/pike $current_path/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install LBaaS plugin
     rally verify add-verifier-ext --version stable/pike --source https://github.com/openstack/neutron-lbaas
+
+    pip install --force-reinstall python-cinderclient==3.2.0
+
     unset https_proxy
+    unset http_proxy
   fi
   # supress tempest.conf display in console
   #rally verify configure-verifier --show
@@ -74,22 +101,31 @@ if [ "$PROXY" == "offline" ]; then
 fi
 #image
 glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
-    if [ -n "${PROXY}" ] && [ "$PROXY" -ne "offline" ]; then
+    if [ -n "${PROXY}" ] && [ "$PROXY" != "offline" ]; then
       export http_proxy=$PROXY
+      export https_proxy=$PROXY
     fi
-    ls $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img || wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+    ls $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img || wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
     unset http_proxy
-    echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
-    md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-    glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+    unset https_proxy
+    echo "MD5 should be 443b7623e27ecf03dc9e01ee93f67afe"
+    md5sum $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+    glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
 }
 IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
 
 #flavor for rally
-nova flavor-list | grep tiny 2>&1 >/dev/null || {
+nova flavor-list | grep m1.tiny 2>&1 >/dev/null || {
     echo "Let's create m1.tiny flavor"
-    nova flavor-create --is-public true m1.tiny auto 128 1 1
+    nova flavor-create --is-public true m1.tiny auto 512 1 1
 }
+nova flavor-list | grep m1.micro 2>&1 >/dev/null || {
+    echo "Let's create m1.micro flavor"
+    nova flavor-create --is-public true m1.micro auto 1024 2 1
+}
+FLAVOR_REF=$(nova flavor-list | grep m1.tiny | awk '{print $2}')
+FLAVOR_REF_ALT=$(nova flavor-list | grep m1.micro | awk '{print $2}')
+
 #shared fixed network
 shared_count=`neutron net-list -c name -c shared | grep True | wc -l`
 if [ $shared_count -gt 1 ]; then
@@ -110,6 +146,8 @@ echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 
 #Updating of tempest_full.conf file is skipped/deprecated
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's/${FLAVOR_REF}/'$FLAVOR_REF'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's/${FLAVOR_REF_ALT}/'$FLAVOR_REF_ALT'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FIXED_NET}/'$FIXED_NET'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FIXED_SUBNET_NAME}/'$FIXED_SUBNET_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${OS_USERNAME}/'$OS_USERNAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
@@ -136,23 +174,23 @@ rally_configuration
 if [ -n "${TEMPEST_REPO}" ]; then
     tempest_configuration
     quick_configuration
-    # Since OS Pike is deployed:
+    # Since OS Pike is used:
     cat $current_path/cvp-configuration/tempest/skip-list-pike.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
-    # Since Opencontrail is deployed:
+    # Since OpenContrail is used:
     cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
-    # Since Heat is deployed:
+    # Since Heat plugin is used:
     cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
-    # Since Ceph is deployed:
+    # Since Ceph is used:
     cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+    # Since LBaaS is used with Contrail:
+    cat $current_path/cvp-configuration/tempest/skip-list-lbaas.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
 
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
-    # If Barbican tempest plugin is installed, use this
-    #mkdir /etc/tempest
-    #rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
-    # Add 2 additional tempest tests (live migration to all nodes + ssh to all nodes)
-    # TBD
-    #cat tempest/test_extension.py >> repo/tempest/scenario/test_server_multinode.py
+
+    # If Barbican tempest plugin is installed, and for Heat API tests
+    mkdir -p /etc/tempest
+    rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
 fi
 set -e
 
