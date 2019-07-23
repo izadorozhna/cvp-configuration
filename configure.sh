@@ -43,22 +43,23 @@ rally_configuration () {
 
 tempest_configuration () {
   sub_name=`date "+%H_%M_%S"`
-  # default tempest version is 18.0.0 now, unless
-  # it is explicitly defined in pipelines
-  if [ "$tempest_version" == "" ]; then
-      tempest_version='17.2.0'
-  fi
+  tempest_version='mcp/pike'
   if [ "$PROXY" == "offline" ]; then
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
+    rally verify add-verifier-ext --source /var/lib/neutron-lbaas
+
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
     fi
     apt-get update; apt-get install -y iputils-ping curl wget
+    current_path=$(pwd)
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     # Install Heat plugin
-    rally verify add-verifier-ext --version 12b770e923060f5ef41358c37390a25be56634f0 --source https://github.com/openstack/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/pike --source http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin
+    # Install LBaaS plugin
+    rally verify add-verifier-ext --version stable/pike --source https://github.com/openstack/neutron-lbaas
     unset https_proxy
   fi
   # supress tempest.conf display in console
@@ -135,11 +136,15 @@ rally_configuration
 if [ -n "${TEMPEST_REPO}" ]; then
     tempest_configuration
     quick_configuration
-    # If you do not have fip network, use this command
-    #cat $current_path/cvp-configuration/tempest/skip-list-fip-only.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    # If Opencontrail is deployed, use this command
-    #cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    #cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # Since OS Pike is deployed:
+    cat $current_path/cvp-configuration/tempest/skip-list-pike.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+    # Since Opencontrail is deployed:
+    cat $current_path/cvp-configuration/tempest/skip-list-oc4.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+    # Since Heat is deployed:
+    cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+    # Since Ceph is deployed:
+    cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier --show
     # If Barbican tempest plugin is installed, use this
