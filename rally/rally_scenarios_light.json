@@ -1,4 +1,5 @@
-{% set flavor_name = flavor_name or "m1.small" %}
+{% set flavor_name = flavor_name or "m1.tiny" %}
+{% set flavor_name_ubuntu = flavor_name_ubuntu or "m1.small" %}
 {% set image_name = image_name or "testvm" %}
 {% set image_name_ubuntu = image_name_ubuntu or "Ubuntu1604" %}
 {% set volume_type = volume_type or "" %}
@@ -10,13 +11,13 @@
 {% set rbd_image = "/home/rally/cvp-configuration/cirros-0.4.0-x86_64-disk.img" %}
 {% set script_file = script_file or "/home/rally/cvp-configuration/rally/instance_test.sh" %}
 {% set volume_size = 10 %}
-{% set concurrency = 1 %}
-{% set subnets_concurrency = 1 %}
-{% set token_concurrency = 1 %}
-{% set token_times = 1 %}
-{% set times = 1 %}
-{% set users = 1 %}
-{% set tenants = 1 %}
+{% set concurrency = 3 %}
+{% set subnets_concurrency = 2 %}
+{% set token_concurrency = 10 %}
+{% set token_times = 100 %}
+{% set times = 20 %}
+{% set users = 2 %}
+{% set tenants = 5 %}
 {
     "NovaServers.boot_and_delete_server": [
         {
@@ -25,7 +26,7 @@
                     "name": "{{flavor_name}}"
                 },
                 "image": {
-                    "name": "{{image_name_ubuntu}}"
+                    "name": "{{image_name}}"
                 },
                 "force_delete": false,
                 "auto_assign_nic": true,
@@ -185,7 +186,7 @@
                 ],
                 "auto_assign_nic": true,
                 "image": {
-                    "name": "{{image_name_ubuntu}}"
+                    "name": "{{image_name}}"
                 }
             },
             "context": {
@@ -223,7 +224,7 @@
                     "name": "{{flavor_name}}"
                 },
                 "image": {
-                    "name": "{{image_name_ubuntu}}"
+                    "name": "{{image_name}}"
                 },
                 "volume_size": {{volume_size}},
                 "volume_type": "{{volume_type}}",
@@ -392,7 +393,7 @@
             "args": {
                 "size": {{volume_size}},
                 "image": {
-                    "name": "{{image_name_ubuntu}}"
+                    "name": "{{image_name}}"
                 },
                 "flavor": {
                     "name": "{{flavor_name}}"
@@ -487,7 +488,7 @@
         {
             "args": {
                 "flavor": {
-                    "name": "{{flavor_name}}"
+                    "name": "{{flavor_name_ubuntu}}"
                 },
                 "image": {
                     "name": "{{image_name_ubuntu}}"

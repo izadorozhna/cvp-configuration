@@ -3,10 +3,11 @@
 {% set image_name_ubuntu = image_name_ubuntu or "Ubuntu1604" %}
 {% set volume_type = volume_type or "" %}
 {% set availability_zone = "nova" %}
-{% set ext_net_name = "ext-net" %}
+{% set ext_net_name = "${EXT_NET_NAME}" %}
+{% set ext_net_id = "${EXT_NET_ID}" %}
 {% set priv_net_id = priv_net_id or "${FIXED_NET_ID}" %}
 {% set heat_template = "/home/rally/cvp-configuration/rally/default.yaml.template" %}
-{% set rbd_image = "/home/rally/cvp-configuration/cirros-0.3.4-x86_64-disk.img" %}
+{% set rbd_image = "/home/rally/cvp-configuration/cirros-0.4.0-x86_64-disk.img" %}
 {% set script_file = script_file or "/home/rally/cvp-configuration/rally/instance_test.sh" %}
 {% set volume_size = 10 %}
 {% set concurrency = 5 %}
@@ -28,7 +29,15 @@
                 },
                 "force_delete": false,
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -39,8 +48,7 @@
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
-                },
-                "network": {}
+                }
             },
             "sla": {
                 "failure_rate": {
@@ -80,7 +88,6 @@
                 "times": {{times}}
             },
             "context": {
-                "network": {},
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
@@ -140,7 +147,6 @@
                 "times": {{times}}
             },
             "context": {
-                "network": {},
                 "users": {
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
@@ -223,7 +229,15 @@
                 "volume_type": "{{volume_type}}",
                 "force_delete": false,
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -235,7 +249,11 @@
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
                 },
-                "network": {},
+                "api_versions@openstack": {
+                    "cinder": {
+                        "service_type": "volumev3"
+                    }
+                },
                 "quotas": {
                     "cinder": {
                         "volumes": -1,
@@ -262,7 +280,7 @@
     "CinderVolumes.create_and_delete_volume": [
         {
             "args": {
-                "size": {{volume_size}},
+                "size": {{volume_size}}
             },
             "runner": {
                 "type": "constant",
@@ -273,6 +291,11 @@
                 "users": {
                     "tenants": {{tenants}},
                     "users_per_tenant": {{users}}
+                },
+                "api_versions@openstack": {
+                    "cinder": {
+                        "service_type": "volumev3"
+                    }
                 },
                 "quotas": {
                     "cinder": {
@@ -377,7 +400,15 @@
                 "create_volume_params": {
                 },
                 "auto_assign_nic": true,
-                "availability_zone": "{{availability_zone}}"
+                "availability_zone": "{{availability_zone}}",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -389,7 +420,11 @@
                     "tenants": {{users}},
                     "users_per_tenant": {{tenants}}
                 },
-                "network": {},
+                "api_versions@openstack": {
+                    "cinder": {
+                        "service_type": "volumev3"
+                    }
+                },
                 "quotas": {
                     "nova": {
                         "instances": -1,
@@ -427,7 +462,12 @@
                     "users_per_tenant": {{tenants}}
                 },
                 "volumes": {
-                    "size": {{volume_size}},
+                    "size": {{volume_size}}
+                },
+                "api_versions@openstack": {
+                    "cinder": {
+                        "service_type": "volumev3"
+                    }
                 },
                 "quotas": {
                     "cinder": {
@@ -463,7 +503,15 @@
                     "interpreter": "/bin/sh",
                     "script_file": "{{script_file}}"
                 },
-                "username": "ubuntu"
+                "username": "ubuntu",
+                "nics": [
+                    { "net-id": "{{priv_net_id}}" }
+                ],
+                "router_create_args": {
+                    "external_gateway_info": {
+                            "network_id": "{{ext_net_id}}"
+                    }
+                }
             },
             "runner": {
                 "type": "constant",
@@ -479,8 +527,7 @@
                     "cinder": {
                         "service_type": "volumev3"
                     }
-                },
-                "network": {}
+                }
             },
             "sla": {
                 "failure_rate": {
