@@ -52,7 +52,18 @@ rally_configuration () {
   fi
 
   # Get fixed net id and set it in rally_scenarios.json, rally_dry_run_scenarios.json
-  FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
+  shared_count=`neutron net-list -c name -c shared | grep True | grep "fixed-net" | wc -l`
+  if [ $shared_count -eq 0 ]; then
+    echo "Let's create shared fixed net"
+    neutron net-create --shared fixed-net
+    FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
+    neutron subnet-create --name fixed-subnet --gateway 192.168.0.1 --allocation-pool start=192.168.0.2,end=192.168.0.254 --ip-version 4 $FIXED_NET_ID 192.168.0.0/24
+  fi
+  fixed_count=`neutron net-list | grep "fixed-net" | wc -l`
+  if [ $fixed_count -gt 1 ]; then
+    echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
+  fi
+  FIXED_NET=$(neutron net-list --shared True -c name -c router:external | grep False | awk '{print $2}' | tail -n 1)
   FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
   echo "Fixed net is: $FIXED_NET"
 
@@ -141,7 +152,6 @@ fi
 fixed_count=`neutron net-list | grep "fixed-net" | wc -l`
 if [ $fixed_count -gt 1 ]; then
 echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
-
 fi
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
