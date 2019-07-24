@@ -31,6 +31,11 @@ rally_configuration () {
   fi
 
   sub_name=`date "+%H_%M_%S"`
+
+  # remove dashes from rally user passwords to fit into 32 char limit
+  sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/scenarios/keystone/utils.py
+  sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/context/keystone/users.py
+
   rally deployment create --fromenv --name=tempest_$sub_name
   rally deployment config
 
@@ -126,18 +131,22 @@ FLAVOR_REF=$(nova flavor-list | grep m1.tiny | awk '{print $2}')
 FLAVOR_REF_ALT=$(nova flavor-list | grep m1.micro | awk '{print $2}')
 
 #shared fixed network
-shared_count=`neutron net-list -c name -c shared | grep True | wc -l`
-if [ $shared_count -gt 1 ]; then
-  echo "TOO MANY SHARED NETWORKS! Script will choose just 1 random"
-fi
+shared_count=`neutron net-list -c name -c shared | grep True | grep "fixed-net" | wc -l`
 if [ $shared_count -eq 0 ]; then
   echo "Let's create shared fixed net"
   neutron net-create --shared fixed-net
-  neutron subnet-create --name fixed-subnet --gateway 192.168.0.1 --allocation-pool start=192.168.0.2,end=192.168.0.254 --ip-version 4 fixed-net 192.168.0.0/24
+  FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
+  neutron subnet-create --name fixed-subnet --gateway 192.168.0.1 --allocation-pool start=192.168.0.2,end=192.168.0.254 --ip-version 4 $FIXED_NET_ID 192.168.0.0/24
 fi
-FIXED_NET=$(neutron net-list -c name -c shared | grep True | awk '{print $2}' | tail -n 1)
+fixed_count=`neutron net-list | grep "fixed-net" | wc -l`
+if [ $fixed_count -gt 1 ]; then
+echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
+
+fi
+FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
-echo "Fixed net is: $FIXED_NET"
+echo "Fixed net name is: $FIXED_NET"
+echo "Fixed net ID is: $FIXED_NET_ID"
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET -c subnets | grep subnets | awk '{print $4}')
 FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | awk '{print $4}')
 echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
@@ -158,6 +167,9 @@ sed -i 's/publicURL/'$TEMPEST_ENDPOINT_TYPE'/g' $current_path/cvp-configuration/
 #supress tempest.conf display in console
 #cat $current_path/cvp-configuration/tempest/tempest_ext.conf
 cp $current_path/cvp-configuration/tempest/boot_config_none_env.yaml /home/rally/boot_config_none_env.yaml
+cp $current_path/cvp-configuration/cleanup.sh /home/rally/cleanup.sh
+cp $current_path/cvp-configuration/rally/default.yaml.template /home/rally/default.yaml.template
+chmod 755 /home/rally/cleanup.sh
 }
 
 if [ "$1" == "reconfigure" ]; then
