@@ -51,7 +51,7 @@ rally_configuration () {
   FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
   echo "Fixed net is: $FIXED_NET"
 
-  EXT_NET_ID=$(neutron net-list --router:external True | grep ext | awk '{print $2}')
+  EXT_NET_ID=$(neutron net-list --router:external True | grep ext | awk '{print $2}' | tail -n 1)
   EXT_NET_NAME=$(neutron net-show $EXT_NET_ID -c name | grep name | awk '{print $4}')
   echo "External net ID is: $EXT_NET_ID"
   echo "External net name is: $EXT_NET_NAME"
