@@ -87,6 +87,20 @@ rally_configuration () {
   sed -i 's/${EXT_NET_NAME}/'$EXT_NET_NAME'/g' $current_path/cvp-configuration/rally/*
 }
 
+update_cacerts () {
+  # configuring certificates file
+  if [ -z ${OS_CACERT+x} ]; then
+    echo '# No OS_CACERT is set, update of crt file skipped'
+  else
+    echo '# Adding custom certificates'
+    ca=( $(find ${1} -name cacert.pem) )
+    for crt in ${ca[@]}; do
+      cat ${OS_CACERT} >>${crt}
+      echo '-> ${crt}'
+    done
+  fi
+}
+
 tempest_configuration () {
   cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
   sub_name=`date "+%H_%M_%S"`
@@ -100,6 +114,7 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
     rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
     rally verify add-verifier-ext --source /var/lib/designate-tempest-plugin
+    update_cacerts "/usr/local/lib"
   else
     if [ -n "${PROXY}" ]; then
       export https_proxy=$PROXY
@@ -120,6 +135,7 @@ tempest_configuration () {
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
     unset http_proxy
+    update_cacerts "/home/rally/.rally/verification"
   fi
   # supress tempest.conf display in console
   #rally verify configure-verifier --show
