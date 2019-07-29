@@ -202,7 +202,7 @@ if [ -n "${TEMPEST_REPO}" ]; then
     # Since Heat plugin is used:
     cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
     # Since Ceph is used:
-    cat $current_path/cvp-configuration/tempest/skip-list-heat.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
+    cat $current_path/cvp-configuration/tempest/skip-list-ceph.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
     # Since LBaaS is used with Contrail:
     cat $current_path/cvp-configuration/tempest/skip-list-lbaas.yaml >> $current_path/cvp-configuration/tempest/skip-list.yaml
 
