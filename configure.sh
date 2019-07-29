@@ -143,10 +143,6 @@ tempest_configuration () {
 
 quick_configuration () {
 current_path=$(pwd)
-# Remove this if you use local gerrit cvp-configuration repo
-if [ "$PROXY" == "offline" ]; then
-  current_path=/var/lib
-fi
 #image
 glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
     if [ -n "${PROXY}" ] && [ "$PROXY" != "offline" ]; then
