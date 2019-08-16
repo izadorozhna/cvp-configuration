@@ -24,6 +24,14 @@ RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest
     pushd designate-tempest-plugin; git checkout mcp/queens; pip install -r requirements.txt; \
     popd;
 
+RUN git clone https://github.com/openstack/neutron-lbaas && \
+    pushd neutron-lbaas; git checkout stable/queens; pip install -r requirements.txt; \
+    popd;
+
+RUN git clone http://gerrit.mcp.mirantis.com/packaging/sources/telemetry-tempest-plugin && \
+    pushd telemetry-tempest-plugin; git checkout mcp/queens; pip install -r requirements.txt; \
+    popd;
+
 RUN sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/scenarios/keystone/utils.py
 RUN sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/context/keystone/users.py
 
