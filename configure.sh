@@ -255,6 +255,9 @@ if [ -n "${TEMPEST_REPO}" ]; then
     # Add 2 additional tempest tests (live migration to all nodes + ssh to all nodes)
     # TBD
     #cat tempest/test_extension.py >> repo/tempest/scenario/test_server_multinode.py
+
+    # copy final skip list skip-list-queens.yaml to skip-list.yaml to use in by default in the pipeline
+    cp $current_path/cvp-configuration/tempest/skip-list-queens.yaml $current_path/cvp-configuration/tempest/skip-list.yaml
 fi
 set -e
 
