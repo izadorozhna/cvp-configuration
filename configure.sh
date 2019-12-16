@@ -76,7 +76,9 @@ rally_configuration () {
   FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
   echo "Fixed net is: $FIXED_NET"
 
-  EXT_NET_ID=$(neutron net-list --router:external True | grep ext | awk '{print $2}' | tail -n 1)
+  # change CUSTOMER_EXT_NET_NAME_OR_PREFIX to use specific public (external) network!
+  CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext"
+  EXT_NET_ID=$(neutron net-list --router:external True | grep $CUSTOMER_EXT_NET_NAME_OR_PREFIX | awk '{print $2}' | tail -n 1)
   EXT_NET_NAME=$(neutron net-show $EXT_NET_ID -c name | grep name | awk '{print $4}')
   echo "External net is: $EXT_NET_ID"
   echo "External net name is: $EXT_NET_NAME"
@@ -104,8 +106,6 @@ update_cacerts () {
 tempest_configuration () {
   cp -r /home/rally/source/cvp-configuration /home/rally/cvp-configuration
   sub_name=`date "+%H_%M_%S"`
-  # default tempest version is 18.0.0 now, unless
-  # it is explicitly defined in pipelines
   if [ "$tempest_version" == "" ]; then
       tempest_version='mcp/queens'
   fi
@@ -141,8 +141,9 @@ tempest_configuration () {
     unset http_proxy
     update_cacerts "/home/rally/.rally/verification"
   fi
-  # supress tempest.conf display in console
-  #rally verify configure-verifier --show
+  # set password length to 32
+  data_utils_path=`find /home/rally/.rally/verification/ -name data_utils.py`
+  sed -i 's/length=15/length=32/g' $data_utils_path
 }
 
 quick_configuration () {
@@ -184,7 +185,7 @@ if [ $shared_count -eq 0 ]; then
 fi
 fixed_count=`neutron net-list | grep "fixed-net" | wc -l`
 if [ $fixed_count -gt 1 ]; then
-echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
+  echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
 fi
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-show $FIXED_NET -c id | grep id | awk '{print $4}')
