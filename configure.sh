@@ -219,7 +219,7 @@ if [ "$1" == "reconfigure" ]; then
   echo "This is reconfiguration"
   rally verify configure-verifier --reconfigure
   rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
-  rally verify configure-verifier --show
+  rally verify configure-verifier
   exit 0
 fi
 
@@ -242,7 +242,7 @@ if [ -n "${TEMPEST_REPO}" ]; then
     cat $current_path/cvp-configuration/tempest/skip-list-designate.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
 
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
-    rally verify configure-verifier --show
+    rally verify configure-verifier
 
     # If Barbican tempest plugin is installed, and for Heat API tests
     mkdir -p /etc/tempest
