@@ -1,4 +1,4 @@
-{% set flavor_name = flavor_name or "m1.tiny" %}
+{% set flavor_name = flavor_name or "m1.tiny_test" %}
 {% set flavor_name_ubuntu = flavor_name_ubuntu or "m1.small" %}
 {% set image_name = image_name or "testvm" %}
 {% set image_name_ubuntu = image_name_ubuntu or "Ubuntu1604" %}
