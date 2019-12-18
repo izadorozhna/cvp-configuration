@@ -161,20 +161,20 @@ glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
 IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
 
 #flavors for Tempest and Rally
+nova flavor-list | grep m1.extra_tiny_test 2>&1 >/dev/null || {
+    echo "Let's create m1.extra_tiny_test flavor"
+    nova flavor-create --is-public true m1.extra_tiny_test auto 256 1 1
+}
 nova flavor-list | grep m1.tiny_test 2>&1 >/dev/null || {
     echo "Let's create m1.tiny_test flavor"
-    nova flavor-create --is-public true m1.tiny_test auto 512 1 1
-}
-nova flavor-list | grep m1.micro 2>&1 >/dev/null || {
-    echo "Let's create m1.micro flavor"
-    nova flavor-create --is-public true m1.micro auto 1024 2 1
+    nova flavor-create --is-public true m1.tiny_test auto 512 5 1
 }
 nova flavor-list | grep m1.small 2>&1 >/dev/null || {
     echo "Let's create m1.small flavor"
     nova flavor-create --is-public true m1.small auto 2048 20 1
 }
-FLAVOR_REF=$(nova flavor-list | grep m1.tiny_test | awk '{print $2}')
-FLAVOR_REF_ALT=$(nova flavor-list | grep m1.micro | awk '{print $2}')
+FLAVOR_REF=$(nova flavor-list | grep m1.extra_tiny_test | awk '{print $2}')
+FLAVOR_REF_ALT=$(nova flavor-list | grep m1.tiny_test | awk '{print $2}')
 
 #shared fixed network
 shared_count=`neutron net-list -c name -c shared | grep True | grep "fixed-net" | wc -l`
