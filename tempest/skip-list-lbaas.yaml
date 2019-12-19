@@ -29,11 +29,9 @@ neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTe
 neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_list_load_balancers: Invalid test - passes only on empty env otherwise it asserts all existing resources
 neutron_lbaas.tests.tempest.v2.api.test_load_balancers_non_admin.LoadBalancersTestJSON.test_list_load_balancers_two[smoke]: Invalid test - passes only on empty env otherwise it asserts all existing resources
 neutron_lbaas.tests.tempest.v2.api.test_members_admin.MemberTestJSON.test_create_member_empty_tenant_id[negative]: Contrail compatibility issue - Contrail does not expect invalid Tenant ID.
-neutron_lbaas.tests.tempest.v2.api.test_members_non_admin.MemberTestJSON.test_create_member_invalid_tenant_id[negative]: Contrail compatibility issue - Contrail does not expect invalid Tenant ID.
 neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_delete_pool[smoke]: Tempest bug - invalid tenant ID is used which is not acceptible for Contrail
 neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_update_pool_sesssion_persistence_app_cookie[smoke]: Tempest bug - invalid tenant ID is used which is not acceptible for Contrail
 neutron_lbaas.tests.tempest.v2.api.test_pools_admin.TestPools.test_update_pool_sesssion_persistence_app_to_http: Tempest bug - invalid tenant ID is used which is not acceptible for Contrail
-neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_for_other_tenant_field[negative]: Contrail compatibility issue - Contrail does not expect invalid Tenant ID.
 neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_invalid_tenant_id_field[negative]: Contrail compatibility issue - Contrail does not expect invalid Tenant ID.
 neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_missing_lb_algorithm_field[negative]: Contrail compatibility issue - Contrail does not expect missing fields
 neutron_lbaas.tests.tempest.v2.api.test_pools_non_admin.TestPools.test_create_pool_missing_name_field: Contrail compatibility issue - Contrail does not expect missing fields
