@@ -196,8 +196,17 @@ FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET -c subnets | grep subnets | awk '{
 FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | awk '{print $4}')
 echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 
+# check minimum number of cmp nodes
+CMP_NUM=$(nova hypervisor-list | grep up | grep enabled | wc -l)
+if [ $CMP_NUM -gt 1 ]; then
+  MIN_COMPUTE_NODES=2
+else
+  MIN_COMPUTE_NODES=1
+fi
+
 
 #Updating of tempest_full.conf file is skipped/deprecated
+sed -i 's/${MIN_COMPUTE_NODES}/'$MIN_COMPUTE_NODES'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FLAVOR_REF}/'$FLAVOR_REF'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FLAVOR_REF_ALT}/'$FLAVOR_REF_ALT'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
