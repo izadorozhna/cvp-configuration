@@ -196,6 +196,13 @@ FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET -c subnets | grep subnets | awk '{
 FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | awk '{print $4}')
 echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 
+# change CUSTOMER_EXT_NET_NAME_OR_PREFIX to use specific public (external) network!
+CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext"
+EXT_NET_ID=$(neutron net-list --router:external True | grep $CUSTOMER_EXT_NET_NAME_OR_PREFIX | awk '{print $2}' | tail -n 1)
+EXT_NET_NAME=$(neutron net-show $EXT_NET_ID -c name | grep name | awk '{print $4}')
+echo "External net is: $EXT_NET_ID"
+echo "External net name is: $EXT_NET_NAME"
+
 # check minimum number of cmp nodes
 CMP_NUM=$(nova hypervisor-list | grep up | grep enabled | wc -l)
 if [ $CMP_NUM -gt 1 ]; then
@@ -206,6 +213,7 @@ fi
 
 
 #Updating of tempest_full.conf file is skipped/deprecated
+sed -i 's/${EXT_NET_NAME}/'$EXT_NET_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${MIN_COMPUTE_NODES}/'$MIN_COMPUTE_NODES'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FLAVOR_REF}/'$FLAVOR_REF'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
