@@ -126,11 +126,11 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     current_path=$(pwd)
     # Install Heat plugin
-    #git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
-    #rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
-    #git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
-    #rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
+    git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
+    rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
     # Install Neutron LBaaS plugin
     rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
 
@@ -258,8 +258,10 @@ if [ -n "${TEMPEST_REPO}" ]; then
     cat $current_path/cvp-configuration/tempest/skip-list-ceph.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
     # Since LBaaS is used with Contrail:
     cat $current_path/cvp-configuration/tempest/skip-list-lbaas.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
-    # Since Designate is usedL
+    # Since Designate is used
     cat $current_path/cvp-configuration/tempest/skip-list-designate.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
+    # Some cloud specific tests
+    cat $current_path/cvp-configuration/tempest/skip-list-ril-specific.yaml >> $current_path/cvp-configuration/tempest/skip-list-queens.yaml
 
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier
