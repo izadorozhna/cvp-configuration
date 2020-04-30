@@ -215,6 +215,7 @@ fi
 
 #Updating of tempest_full.conf file is skipped/deprecated
 sed -i 's/${EXT_NET_NAME}/'$EXT_NET_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${MIN_COMPUTE_NODES}/'$MIN_COMPUTE_NODES'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${IMAGE_REF2}/'$IMAGE_REF2'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/${FLAVOR_REF}/'$FLAVOR_REF'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
