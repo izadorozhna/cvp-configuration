@@ -83,6 +83,23 @@ rally_configuration () {
   echo "External net is: $EXT_NET_ID"
   echo "External net name is: $EXT_NET_NAME"
 
+  # Find or create Ubuntu1604_Rally image
+  ubuntu_image=`glance image-list | grep "Ubuntu1604_Rally" | wc -l`
+  if [ $ubuntu_image -eq 0 ]; then
+    echo "Let's download and create Ubuntu1604_Rally image"
+    if [ "$PROXY" != "offline" ]; then
+      if [ -n "${PROXY}" ]; then
+        export http_proxy=$PROXY
+        export https_proxy=$PROXY
+      fi
+      wget https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img -O /home/rally/source/cvp-configuration/xenial-server-cloudimg-amd64-disk1.img
+      unset http_proxy
+      unset https_proxy
+    fi
+    glance image-create --name=Ubuntu1604_Rally --visibility=public --container-format=bare --disk-format=qcow2 < /home/rally/source/cvp-configuration/xenial-server-cloudimg-amd64-disk1.img \
+    && echo "Created 'Ubuntu1604_Rally' image"
+  fi
+
   current_path=$(pwd)
   sed -i 's/${FIXED_NET_ID}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/*
   sed -i 's/${EXT_NET_ID}/'$EXT_NET_ID'/g' $current_path/cvp-configuration/rally/*
