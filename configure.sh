@@ -143,11 +143,7 @@ tempest_configuration () {
     rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --version $tempest_version
     current_path=$(pwd)
     # Install Heat plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
-    sed -i 's/gabbi>=1\.35\.0/gabbi>=1\.35\.0\,\<\=1\.49\.0/g' $current_path/heat-tempest-plugin/requirements.txt
-    cd $current_path/heat-tempest-plugin
-    git add requirements.txt
-    git commit -m "Fixed gabbi for heat tests"
+    git clone https://10.157.223.71:8080/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
