@@ -144,13 +144,13 @@ tempest_configuration () {
     current_path=$(pwd)
     # Install Heat plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
+    sed -i 's/gabbi>=1\.35\.0/gabbi>=1\.35\.0\,\<\=1\.49\.0/g' $current_path/heat-tempest-plugin/requirements.txt
     rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
     git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
     # Install Neutron LBaaS plugin
     rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
-
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
     unset http_proxy
