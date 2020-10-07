@@ -49,7 +49,8 @@ rally_configuration () {
        export https_proxy=$PROXY
      fi
      apt-get update; apt-get install -y iputils-ping curl wget
-     wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+     export no_proxy=apt
+     wget http://apt:8078/artifactory.mirantis.com/artifactory/binary-prod-local/mirantis/external/images/cirros/0.4.0/cirros-0.4.0-x86_64-disk.img -O /home/rally/source/cvp-configuration/cirros-0.4.0-x86_64-disk.img
      unset http_proxy
      unset https_proxy
   fi
@@ -146,10 +147,11 @@ tempest_configuration () {
     git clone https://10.157.223.71:8080/heat-tempest-plugin -b mcp/queens $current_path/heat-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/heat-tempest-plugin
     # Install Designate plugin
-    git clone http://gerrit.mcp.mirantis.com/packaging/sources/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
+    git clone https://10.157.223.71:8080/designate-tempest-plugin -b mcp/queens $current_path/designate-tempest-plugin
     rally verify add-verifier-ext --version mcp/queens --source $current_path/designate-tempest-plugin
     # Install Neutron LBaaS plugin
-    rally verify add-verifier-ext --version stable/queens --source https://github.com/openstack/neutron-lbaas
+    git clone https://10.157.223.71:8080/neutron-lbaas -b stable/queens $current_path/neutron-lbaas
+    rally verify add-verifier-ext --version stable/queens --source $current_path/neutron-lbaas
     pip install --force-reinstall python-cinderclient==3.2.0
     unset https_proxy
     unset http_proxy
@@ -163,19 +165,20 @@ tempest_configuration () {
 quick_configuration () {
 current_path=$(pwd)
 #image
-glance image-list | grep "\btestvm\b" 2>&1 >/dev/null || {
+glance image-list | grep "\bmirantis-testvm\b" 2>&1 >/dev/null || {
     if [ -n "${PROXY}" ] && [ "$PROXY" != "offline" ]; then
       export http_proxy=$PROXY
       export https_proxy=$PROXY
     fi
-    ls $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img || wget http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+    export no_proxy=apt
+    ls $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img || wget http://apt:8078/artifactory.mirantis.com/artifactory/binary-prod-local/mirantis/external/images/cirros/0.4.0/cirros-0.4.0-x86_64-disk.img -O $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
     unset http_proxy
     unset https_proxy
     echo "MD5 should be 443b7623e27ecf03dc9e01ee93f67afe"
     md5sum $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
-    glance image-create --name=testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
+    glance image-create --name=mirantis-testvm --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.4.0-x86_64-disk.img
 }
-IMAGE_REF2=$(glance image-list | grep 'testvm' | awk '{print $2}')
+IMAGE_REF2=$(glance image-list | grep 'mirantis-testvm' | awk '{print $2}')
 
 #flavors for Tempest and Rally
 nova flavor-list | grep m1.extra_tiny_test 2>&1 >/dev/null || {
