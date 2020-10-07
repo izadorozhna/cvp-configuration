@@ -1,0 +1,79 @@
+- username: 'admin'
+  tenant_name: 'admin'
+  password: 'password'
+  types:
+    - admin
+  roles:
+    - 'admin'
+
+- username: 'izadorozna_rally1_user1'
+  tenant_name: 'izadorozna_rally1'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally1_user2'
+  tenant_name: 'izadorozna_rally1'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally1_user3'
+  tenant_name: 'izadorozna_rally1'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally1_user4'
+  tenant_name: 'izadorozna_rally1'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally2_user1'
+  tenant_name: 'izadorozna_rally2'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally2_user2'
+  tenant_name: 'izadorozna_rally2'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally2_user3'
+  tenant_name: 'izadorozna_rally2'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'
+
+- username: 'izadorozna_rally2_user4'
+  tenant_name: 'izadorozna_rally2'
+  password: 'password'
+  types:
+    - member
+  roles:
+    - '_member_'
+    - 'Member'

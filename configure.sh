@@ -78,7 +78,7 @@ rally_configuration () {
   echo "Fixed net is: $FIXED_NET"
 
   # change CUSTOMER_EXT_NET_NAME_OR_PREFIX to use specific public (external) network!
-  CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext"
+  CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext-net"
   EXT_NET_ID=$(neutron net-list --router:external True | grep $CUSTOMER_EXT_NET_NAME_OR_PREFIX | awk '{print $2}' | tail -n 1)
   EXT_NET_NAME=$(neutron net-show $EXT_NET_ID -c name | grep name | awk '{print $4}')
   echo "External net is: $EXT_NET_ID"
@@ -217,7 +217,7 @@ FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | a
 echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 
 # change CUSTOMER_EXT_NET_NAME_OR_PREFIX to use specific public (external) network!
-CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext"
+CUSTOMER_EXT_NET_NAME_OR_PREFIX="ext-net"
 EXT_NET_ID=$(neutron net-list --router:external True | grep $CUSTOMER_EXT_NET_NAME_OR_PREFIX | awk '{print $2}' | tail -n 1)
 EXT_NET_NAME=$(neutron net-show $EXT_NET_ID -c name | grep name | awk '{print $4}')
 echo "External net is: $EXT_NET_ID"
@@ -231,6 +231,8 @@ else
   MIN_COMPUTE_NODES=1
 fi
 
+# path to Tempest test accounts file
+TEST_ACCOUNTS_FILE_PATH="/home/rally/accounts.yaml"
 
 #Updating of tempest_full.conf file is skipped/deprecated
 sed -i 's/${EXT_NET_NAME}/'$EXT_NET_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
@@ -247,11 +249,13 @@ sed -i 's/${OS_REGION_NAME}/'$OS_REGION_NAME'/g' $current_path/cvp-configuration
 sed -i 's|${OS_AUTH_URL}|'"${OS_AUTH_URL}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${OS_PASSWORD}|'"${OS_PASSWORD}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/publicURL/'$TEMPEST_ENDPOINT_TYPE'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's|${TEST_ACCOUNTS_FILE_PATH}|'"${TEST_ACCOUNTS_FILE_PATH}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 #supress tempest.conf display in console
 #cat $current_path/cvp-configuration/tempest/tempest_ext.conf
 cp $current_path/cvp-configuration/tempest/boot_config_none_env.yaml /home/rally/boot_config_none_env.yaml
 cp $current_path/cvp-configuration/cleanup.sh /home/rally/cleanup.sh
 cp $current_path/cvp-configuration/rally/default.yaml.template /home/rally/default.yaml.template
+cp $current_path/cvp-configuration/tempest/accounts.yaml $TEST_ACCOUNTS_FILE_PATH
 chmod 755 /home/rally/cleanup.sh
 }
 
