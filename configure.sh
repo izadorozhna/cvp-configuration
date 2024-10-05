@@ -7,6 +7,15 @@ OS_TENANT_NAME
 OS_AUTH_URL
 )
 
+mkdir -p ~/.pip
+PIP_CONF_CONTENT="[global]
+trusted-host = pypi.python.org
+              pypi.org
+              files.pythonhosted.org
+"
+echo "$PIP_CONF_CONTENT" > ~/.pip/pip.conf
+echo "Content successfully added to ~/.pip/pip.conf"
+
 check_variables () {
   for i in $(seq 0 $(( ${#variables[@]} - 1 )) ); do
     if [ -z "${!variables[$i]}" ]; then
@@ -102,7 +111,8 @@ if [ "${IMAGE_REF2}" == "" ]; then
   if [ -e $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img ]; then
     echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
     md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
-    glance image-create --name=${IMAGE_NAME2} --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
+    qemu-img convert -f qcow2 -O raw $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.raw
+    glance image-create --name=${IMAGE_NAME2} --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.raw
     IMAGE_REF2=$(glance image-list | grep "\b${IMAGE_NAME2}\b" | awk '{print $2}')
   else
     echo "Cirros image was not downloaded! Some tests may fail"
