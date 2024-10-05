@@ -135,7 +135,7 @@ if [ $fixed_count -gt 1 ]; then
   echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
 fi
 # public/floating net
-PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | awk '{print $2}' | tail -n 1)
+PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep mirantis-vlan44-ext | awk '{print $2}' | tail -n 1)
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET_ID -c subnets | grep subnets | awk '{print $4}')
