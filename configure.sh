@@ -45,6 +45,7 @@ rally_configuration () {
   rally deployment create --fromenv --name=tempest_$sub_name
   echo "[openstack]" >> /etc/rally/rally.conf
   echo "pre_newton_neutron=True" >> /etc/rally/rally.conf
+  echo "img_disk_format=raw" >> /etc/rally/rally.conf
 }
 
 update_cacerts () {
