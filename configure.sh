@@ -113,7 +113,7 @@ if [ "${IMAGE_REF2}" == "" ]; then
     echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
     md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
     qemu-img convert -f qcow2 -O raw $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.raw
-    glance image-create --name=${IMAGE_NAME2} --visibility=public --container-format=bare --disk-format=qcow2 < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.raw
+    glance image-create --name=${IMAGE_NAME2} --visibility=public --container-format=bare --disk-format=raw < $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.raw
     IMAGE_REF2=$(glance image-list | grep "\b${IMAGE_NAME2}\b" | awk '{print $2}')
   else
     echo "Cirros image was not downloaded! Some tests may fail"
@@ -197,8 +197,8 @@ if [ -n "${TEMPEST_REPO}" ]; then
     rally verify configure-verifier --extend $current_path/cvp-configuration/tempest/tempest_ext.conf
     rally verify configure-verifier
     # If Barbican tempest plugin is installed, use this
-    #mkdir /etc/tempest
-    #rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
+    mkdir /etc/tempest
+    rally verify configure-verifier --show | grep -v "rally.api" > /etc/tempest/tempest.conf
     # Add 2 additional tempest tests (live migration to all nodes + ssh to all nodes)
     # TBD
     #cat tempest/test_extension.py >> repo/tempest/scenario/test_server_multinode.py
