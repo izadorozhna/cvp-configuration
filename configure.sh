@@ -34,7 +34,7 @@ rally_configuration () {
       export https_proxy=$PROXY
     fi
     pip install --force-reinstall python-glanceclient==2.11
-    apt-get update; apt-get install -y iputils-ping curl wget
+    apt-get update; apt-get install -y iputils-ping curl wget qemu-utils
     unset http_proxy
     unset https_proxy
   fi
