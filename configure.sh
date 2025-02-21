@@ -153,7 +153,7 @@ FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | 
 FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET_ID -c subnets | grep subnets | awk '{print $4}')
 FIXED_SUBNET_NAME=$(neutron subnet-show -c name $FIXED_SUBNET_ID | grep name | awk '{print $4}')
-echo "Public net name is $PUBLIC_NET"
+echo "Public net name is $PUBLIC_NET, id is $PUBLIC_NET_ID"
 echo "Fixed net name is $FIXED_NET, id is $FIXED_NET_ID"
 echo "Fixed subnet is: $FIXED_SUBNET_ID, name: $FIXED_SUBNET_NAME"
 sed -i 's/${FIXED_NET}/'$FIXED_NET_ID'/g' $current_path/cvp-configuration/rally/rally_scenarios.json
@@ -169,7 +169,7 @@ sed -i 's|${OS_AUTH_URL}|'"${OS_AUTH_URL}"'|g' $current_path/cvp-configuration/t
 sed -i 's|${OS_PASSWORD}|'"${OS_PASSWORD}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${FLAVOR_REF}|'"${FLAVOR_REF}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${PUBLIC_NET}|'"${PUBLIC_NET}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
-sed -i 's|${PUBLIC_NET_ID}|'"${PUBLIC_NET}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's|${PUBLIC_NET_ID}|'"${PUBLIC_NET_ID}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/publicURL/'$TEMPEST_ENDPOINT_TYPE'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 #supress tempest.conf display in console
 #cat $current_path/cvp-configuration/tempest/tempest_ext.conf
