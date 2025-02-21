@@ -129,10 +129,11 @@ current_path=$(pwd)
 #image
 glance_image
 #flavor for rally
-nova flavor-list | grep tiny 2>&1 >/dev/null || {
+nova flavor-list | grep "m1.tiny" 2>&1 >/dev/null || {
     echo "Let's create m1.tiny flavor"
     nova flavor-create --is-public true m1.tiny auto 128 1 1
 }
+FLAVOR_REF=$(openstack flavor show m1.tiny -f value -c id)
 #shared fixed network
 shared_count=`neutron net-list -c name -c shared | grep True | grep "fixed-net" | wc -l`
 if [ $shared_count -eq 0 ]; then
@@ -146,8 +147,8 @@ if [ $fixed_count -gt 1 ]; then
   echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
 fi
 # public/floating net
-#PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_m | awk '{print $2}' | tail -n 1)
 PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep mirantis-vlan2409-ext | awk '{print $2}' | tail -n 1)
+PUBLIC_NET_ID=$(openstack network list  --name ${PUBLIC_NET} -f value -c ID)
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET_ID -c subnets | grep subnets | awk '{print $4}')
@@ -166,7 +167,9 @@ sed -i 's/${OS_TENANT_NAME}/'$OS_TENANT_NAME'/g' $current_path/cvp-configuration
 sed -i 's/${OS_REGION_NAME}/'$OS_REGION_NAME'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${OS_AUTH_URL}|'"${OS_AUTH_URL}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${OS_PASSWORD}|'"${OS_PASSWORD}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's|${FLAVOR_REF}|'"${FLAVOR_REF}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's|${PUBLIC_NET}|'"${PUBLIC_NET}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
+sed -i 's|${PUBLIC_NET_ID}|'"${PUBLIC_NET}"'|g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 sed -i 's/publicURL/'$TEMPEST_ENDPOINT_TYPE'/g' $current_path/cvp-configuration/tempest/tempest_ext.conf
 #supress tempest.conf display in console
 #cat $current_path/cvp-configuration/tempest/tempest_ext.conf
