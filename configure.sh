@@ -133,7 +133,7 @@ nova flavor-list | grep "m1.tiny" 2>&1 >/dev/null || {
     echo "Let's create m1.tiny flavor"
     nova flavor-create --is-public true m1.tiny auto 128 1 1
 }
-FLAVOR_REF=$(openstack flavor show m1.tiny -f value -c id)
+FLAVOR_REF=$(nova flavor-show m1.tiny | grep id | awk '{print $4}')
 #shared fixed network
 shared_count=`neutron net-list -c name -c shared | grep True | grep "fixed-net" | wc -l`
 if [ $shared_count -eq 0 ]; then
@@ -148,7 +148,7 @@ if [ $fixed_count -gt 1 ]; then
 fi
 # public/floating net
 PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep mirantis-vlan2409-ext | awk '{print $2}' | tail -n 1)
-PUBLIC_NET_ID=$(openstack network list --name mirantis-vlan2409-ext -f value -c ID)
+PUBLIC_NET_ID=$(neutron net-show $PUBLIC_NET -f value -c id)
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_SUBNET_ID=$(neutron net-show $FIXED_NET_ID -c subnets | grep subnets | awk '{print $4}')
