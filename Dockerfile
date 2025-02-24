@@ -10,20 +10,18 @@ WORKDIR /var/lib/
 
 RUN mkdir -p cvp-configuration
 
-RUN git clone https://github.com/openstack/tempest && \
-    pushd tempest; git checkout 18.0.0; \
+RUN git clone https://github.com/izadorozhna/tempest-queens.git && \
+    mv tempest-queens tempest; pushd tempest; git checkout 18.0.0; \
     sed -i 's/length=15/length=32/g' /var/lib/tempest/tempest/lib/common/utils/data_utils.py; \
     pip install -r requirements.txt; \
-    popd;
-
-RUN git clone https://github.com/openstack/heat-tempest-plugin && \
-    pushd heat-tempest-plugin; git checkout 0.2.0; pip install -r requirements.txt; \
     popd;
 
 RUN pip install --force-reinstall python-cinderclient==3.2.0 python-glanceclient==2.11 paramiko==2.7.2
 
 RUN sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/scenarios/keystone/utils.py
 RUN sed -i 's/uuid4())/uuid4()).replace("-","")/g' /usr/local/lib/python2.7/dist-packages/rally/plugins/openstack/context/keystone/users.py
+
+RUN wget http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img -P /var/lib/
 
 COPY rally/ /var/lib/cvp-configuration/rally
 COPY tempest/ /var/lib/cvp-configuration/tempest

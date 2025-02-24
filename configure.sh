@@ -70,7 +70,7 @@ tempest_configuration () {
       tempest_version='18.0.0'
   fi
   if [ "$PROXY" == "offline" ]; then
-    rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --source $TEMPEST_REPO --system-wide --version $tempest_version
+    rally verify create-verifier --name tempest_verifier_$sub_name --type tempest --system-wide --source $TEMPEST_REPO
     #rally verify add-verifier-ext --source /var/lib/telemetry-tempest-plugin
     #rally verify add-verifier-ext --source /var/lib/heat-tempest-plugin
     update_cacerts "/usr/local/lib"
@@ -109,6 +109,7 @@ if [ "${IMAGE_REF2}" == "" ]; then
     unset http_proxy
     unset https_proxy
   fi
+  cp /var/lib/cirros-0.3.4-x86_64-disk.img $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
   if [ -e $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img ]; then
     echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
     md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
