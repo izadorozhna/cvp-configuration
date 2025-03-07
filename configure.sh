@@ -109,7 +109,6 @@ if [ "${IMAGE_REF2}" == "" ]; then
     unset http_proxy
     unset https_proxy
   fi
-  cp /var/lib/cirros-0.3.4-x86_64-disk.img $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
   if [ -e $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img ]; then
     echo "MD5 should be ee1eca47dc88f4879d8a229cc70a07c6"
     md5sum $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
@@ -128,6 +127,7 @@ sed -i 's/${IMAGE_NAME2}/'$IMAGE_NAME2'/g' $current_path/cvp-configuration/tempe
 quick_configuration () {
 current_path=$(pwd)
 #image
+cp /var/lib/cirros-0.3.4-x86_64-disk.img $current_path/cvp-configuration/cirros-0.3.4-x86_64-disk.img
 glance_image
 #flavor for rally
 nova flavor-list | grep "m1.tiny" 2>&1 >/dev/null || {
