@@ -98,7 +98,7 @@ glance_image() {
 current_path=$(pwd)
 # fetch image with exact name: testvm
 IMAGE_NAME2=testvm
-IMAGE_REF2=$(glance image-list | grep "\b${IMAGE_NAME2}\b" | awk '{print $2}')
+IMAGE_REF2=$(glance image-list | grep -P "\s${IMAGE_NAME2}\s" | head -n1 | awk '{print $2}')
 if [ "${IMAGE_REF2}" == "" ]; then
   if [ "$PROXY" != "offline" ]; then
     if [ -n "${PROXY}" ]; then

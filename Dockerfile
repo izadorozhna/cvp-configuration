@@ -13,6 +13,7 @@ RUN mkdir -p cvp-configuration
 RUN git clone https://github.com/izadorozhna/tempest-queens.git && \
     mv tempest-queens tempest; pushd tempest; git checkout 18.0.0; \
     sed -i 's/length=15/length=32/g' /var/lib/tempest/tempest/lib/common/utils/data_utils.py; \
+    pip install --upgrade cryptography; \
     pip install -r requirements.txt; \
     popd;
 
