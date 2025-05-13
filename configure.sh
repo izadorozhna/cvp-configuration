@@ -148,7 +148,7 @@ if [ $fixed_count -gt 1 ]; then
 fi
 # public/floating net
 #PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_net_3211 | awk '{print $2}' | tail -n 1)
-PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep mirantis-vlan2409-ext | awk '{print $2}' | tail -n 1)
+PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_net_3204 | awk '{print $2}' | tail -n 1)
 PUBLIC_NET_ID=$(neutron net-show $PUBLIC_NET -f value -c id)
 FIXED_NET=$(neutron net-list -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
 FIXED_NET_ID=$(neutron net-list -c id -c name -c shared | grep "fixed-net" | grep True | awk '{print $2}' | tail -n 1)
