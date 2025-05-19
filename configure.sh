@@ -148,8 +148,10 @@ if [ $fixed_count -gt 1 ]; then
   echo "TOO MANY NETWORKS WITH fixed-net NAME! This may affect tests. Please review your network list."
 fi
 # public/floating net
-# no
+# sj
 PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_net_3204 | awk '{print $2}' | tail -n 1)
+# no
+# PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_net_3204 | awk '{print $2}' | tail -n 1)
 # or
 # PUBLIC_NET=$(neutron net-list -c name -c router:external | grep True | grep floating_net_3211 | awk '{print $2}' | tail -n 1)
 # st
